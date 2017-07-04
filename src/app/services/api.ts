@@ -10,7 +10,7 @@ export class ApiService {
     Accept: 'application/json'
   });
 
-  api_url = 'localhost:3000';
+  api_url = 'http://localhost:3000';
 
   constructor(
   	private http: Http

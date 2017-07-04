@@ -23,7 +23,8 @@ import { routes } from './routes';
     FormsModule
   ],
   providers: [
-  	ApiService
+  	ApiService,
+  	AuthService
   ],
   bootstrap: [AppComponent]
 })

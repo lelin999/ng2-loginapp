@@ -17,7 +17,7 @@ export class AuthService {
 		if (token) { this.setJwt(token) }
 	}
 	
-	setJwt(jwt: String) {
+	setJwt(jwt: string) {
 		window.localStorage.setItem(this.JWT_KEY, jwt);
 		this.apiService.setHeaders({Authorization: `Bearer ${jwt}`});
 	}

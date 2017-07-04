@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../services';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'auth',
@@ -32,6 +33,9 @@ import { AuthService } from '../services';
 			>
 				{{modeText}}
 			</div>
+			<div>
+				{{errorMessage}}
+			</div>
 		</div>
 	`,
 	styles: ['']
@@ -42,16 +46,20 @@ export class Auth {
 		email: "",
 		password: ""
 	}
+	errorMessage = "";
 	modePath = 'signin';
 	mode = 'sign-in';
 	modeText = 'Don\'t have an account?';
 
-	constructor(private auth: AuthService) {};
+	constructor(
+		private auth: AuthService,
+		private router: Router
+		) {};
 
 	modeChange() {
 		if (this.mode === 'sign-in') {
-			this.modePath = 'signout';
-			this.mode = 'sign-out';
+			this.modePath = 'signup';
+			this.mode = 'sign-up';
 			this.modeText = 'Already have an account?';
 		} else {
 			this.modePath = 'signin';
@@ -62,6 +70,14 @@ export class Auth {
 	submit() {
 		console.log(this.user);
 		this.auth.authenticate(this.modePath, this.user)
-			.subscribe( data => console.log(data) );
+			.subscribe( data => {
+				if (data === 'USERORPWNOTFOUND') {
+					this.errorMessage = "Email or password incorrect."
+				} else if (data === 'USEREXISTS') {
+					this.errorMessage = "User already exists."
+				} else {
+					this.router.navigate(['']);
+				}
+			});
 	}
 };
